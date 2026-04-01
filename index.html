@@ -1,0 +1,1689 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hifzi Cell - Kasir Pintar</title>
+
+    <!-- PWA Meta Tags -->
+    <meta name="description" content="Hifzi Cell - Sistem Kasir Pintar">
+    <meta name="theme-color" content="#3b82f6">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="assets/favicon.png">
+    <link rel="apple-touch-icon" href="assets/icon-192x192.png">
+
+    <!-- CSS BASE -->
+    <link rel="stylesheet" href="css/base/variables.css">
+    <link rel="stylesheet" href="css/base/reset.css">
+    <link rel="stylesheet" href="css/base/animations.css">
+
+    <!-- CSS COMPONENTS -->
+    <link rel="stylesheet" href="css/components/buttons.css">
+    <link rel="stylesheet" href="css/components/cards.css">
+    <link rel="stylesheet" href="css/components/forms.css">
+    <link rel="stylesheet" href="css/components/tables.css">
+    <link rel="stylesheet" href="css/components/modals.css">
+    <link rel="stylesheet" href="css/components/sidebar.css">
+    <link rel="stylesheet" href="css/components/toast.css">
+    <link rel="stylesheet" href="css/components/cart-bar.css">
+    <link rel="stylesheet" href="css/components/search.css">
+
+    <!-- CSS LAYOUTS -->
+    <link rel="stylesheet" href="css/layouts/main.css">
+    <link rel="stylesheet" href="css/layouts/login.css">
+    <link rel="stylesheet" href="css/layouts/responsive.css">
+
+    <!-- CSS MODULES -->
+    <link rel="stylesheet" href="css/modules/pos.css">
+    <link rel="stylesheet" href="css/modules/products.css">
+    <link rel="stylesheet" href="css/modules/cash.css">
+    <link rel="stylesheet" href="css/modules/reports.css">
+    <link rel="stylesheet" href="css/modules/transactions.css">
+    <link rel="stylesheet" href="css/modules/receipt.css">
+    <link rel="stylesheet" href="css/modules/debt.css">
+    <link rel="stylesheet" href="css/modules/purchase.css">
+    <link rel="stylesheet" href="css/modules/backup.css">
+    <link rel="stylesheet" href="css/modules/telegram.css">
+    <link rel="stylesheet" href="css/modules/n8n.css">
+    <link rel="stylesheet" href="css/modules/users.css">
+    <link rel="stylesheet" href="css/modules/settings.css">
+    <!-- ✅ CSS Reset Module -->
+    <link rel="stylesheet" href="css/modules/reset.css">
+    <!-- ✅ TAMBAHAN: CSS Capital Module -->
+    <link rel="stylesheet" href="css/modules/capital.css">
+
+    <!-- EXTERNAL LIBRARIES -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <script src="https://unpkg.com/tesseract.js@4.1.1/dist/tesseract.min.js"></script>
+
+    <!-- THEME INITIALIZATION (Anti-Flicker) -->
+    <script>
+        (function() {
+            const savedTheme = localStorage.getItem('hifzi_theme') || 'light';
+            document.documentElement.setAttribute('data-theme', savedTheme);
+
+            const metaTheme = document.querySelector('meta[name="theme-color"]');
+            if (metaTheme) {
+                metaTheme.content = savedTheme === 'dark' ? '#1a1a2e' : '#3b82f6';
+            }
+        })();
+    </script>
+
+    <!-- THEME CSS VARIABLES -->
+    <style>
+        :root {
+            --bg-primary: #ffffff;
+            --bg-secondary: #f8f9fa;
+            --bg-tertiary: #f0f0f0;
+            --bg-card: #ffffff;
+            --bg-hover: #f5f5f5;
+            --text-primary: #333333;
+            --text-secondary: #666666;
+            --text-tertiary: #999999;
+            --text-muted: #bbbbbb;
+            --border-primary: #e0e0e0;
+            --border-secondary: #f0f0f0;
+            --border-focus: #3b82f6;
+            --shadow-sm: 0 2px 8px rgba(0,0,0,0.05);
+            --shadow-md: 0 4px 15px rgba(0,0,0,0.08);
+            --shadow-lg: 0 10px 40px rgba(0,0,0,0.1);
+            --accent-primary: #3b82f6;
+            --accent-secondary: #2563eb;
+            --accent-hover: #1d4ed8;
+            --success: #4caf50;
+            --warning: #ff9800;
+            --error: #f44336;
+            --info: #2196f3;
+            --input-bg: #fafafa;
+            --modal-overlay: rgba(0,0,0,0.5);
+        }
+
+        [data-theme="dark"] {
+            --bg-primary: #1a1a2e;
+            --bg-secondary: #16213e;
+            --bg-tertiary: #0f3460;
+            --bg-card: #252542;
+            --bg-hover: #2d2d4a;
+            --text-primary: #ffffff;
+            --text-secondary: #b8b8d1;
+            --text-tertiary: #8888a5;
+            --text-muted: #666680;
+            --border-primary: #3a3a5c;
+            --border-secondary: #2d2d4a;
+            --border-focus: #ff6b6b;
+            --shadow-sm: 0 2px 8px rgba(0,0,0,0.3);
+            --shadow-md: 0 4px 15px rgba(0,0,0,0.4);
+            --shadow-lg: 0 10px 40px rgba(0,0,0,0.5);
+            --accent-primary: #ff6b6b;
+            --accent-secondary: #ee5a5a;
+            --accent-hover: #ff8585;
+            --success: #6abf69;
+            --warning: #ffb74d;
+            --error: #ef5350;
+            --info: #64b5f6;
+            --input-bg: #252542;
+            --modal-overlay: rgba(0,0,0,0.7);
+        }
+
+        * {
+            transition: background-color 0.3s ease, 
+                        color 0.3s ease, 
+                        border-color 0.3s ease,
+                        box-shadow 0.3s ease;
+        }
+
+        body {
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+        }
+
+        [data-theme="dark"] ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        [data-theme="dark"] ::-webkit-scrollbar-track {
+            background: var(--bg-secondary);
+        }
+
+        [data-theme="dark"] ::-webkit-scrollbar-thumb {
+            background: var(--bg-tertiary);
+            border-radius: 4px;
+        }
+
+        [data-theme="dark"] ::-webkit-scrollbar-thumb:hover {
+            background: var(--border-primary);
+        }
+
+        /* ============================================
+           APP LAYOUT - STRUKTUR UTAMA
+           ============================================ */
+
+        .app-page {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* ============================================
+           SIDEBAR STYLES
+           ============================================ */
+
+        .sidebar {
+            width: 260px;
+            height: 100vh;
+            background: var(--bg-card);
+            border-right: 1px solid var(--border-primary);
+            display: flex;
+            flex-direction: column;
+            position: fixed;
+            left: 0;
+            top: 0;
+            z-index: 1000;
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+
+        .sidebar-header {
+            padding: 16px;
+            border-bottom: 1px solid var(--border-primary);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .sidebar-close {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: var(--text-primary);
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .brand-icon {
+            font-size: 28px;
+        }
+
+        .brand-text h2 {
+            font-size: 16px;
+            font-weight: 700;
+            margin: 0;
+            color: var(--text-primary);
+        }
+
+        .brand-text small {
+            font-size: 11px;
+            color: var(--text-secondary);
+        }
+
+        .sidebar-nav {
+            flex: 1;
+            padding: 12px;
+            overflow-y: auto;
+        }
+
+        .nav-section {
+            margin-bottom: 8px;
+        }
+
+        .nav-dropdown-toggle {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            padding: 8px 12px;
+            color: var(--text-secondary);
+            text-decoration: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 4px;
+            background: none;
+            border: none;
+        }
+
+        .nav-dropdown-toggle:hover {
+            background: var(--bg-hover);
+            color: var(--accent-primary);
+        }
+
+        .nav-dropdown-toggle.active {
+            color: var(--accent-primary);
+        }
+
+        .nav-dropdown-toggle .dropdown-arrow {
+            transition: transform 0.3s ease;
+            font-size: 10px;
+        }
+
+        .nav-dropdown-toggle.active .dropdown-arrow {
+            transform: rotate(180deg);
+        }
+
+        .nav-dropdown-menu {
+            display: none;
+            flex-direction: column;
+            gap: 2px;
+            padding-left: 0;
+        }
+
+        .nav-dropdown-menu.active {
+            display: flex;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 12px;
+            color: var(--text-secondary);
+            text-decoration: none;
+            border-radius: 8px;
+            transition: all 0.2s ease;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        .nav-link:hover {
+            background: var(--bg-hover);
+            color: var(--accent-primary);
+        }
+
+        .nav-link.active {
+            background: var(--accent-primary);
+            color: white;
+        }
+
+        .nav-icon {
+            font-size: 18px;
+            width: 24px;
+            text-align: center;
+        }
+
+        .badge {
+            margin-left: auto;
+            background: var(--error);
+            color: white;
+            font-size: 11px;
+            padding: 2px 6px;
+            border-radius: 10px;
+            min-width: 18px;
+            text-align: center;
+        }
+
+        .kasir-status-sidebar {
+            padding: 12px;
+            border-bottom: 1px solid var(--border-primary);
+        }
+
+        .kasir-indicator {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+            margin-bottom: 8px;
+        }
+
+        .kasir-indicator.open {
+            color: var(--success);
+        }
+
+        .kasir-indicator.closed {
+            color: var(--error);
+        }
+
+        .kasir-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: currentColor;
+        }
+
+        .sidebar-footer {
+            padding: 12px;
+            border-top: 1px solid var(--border-primary);
+            margin-top: auto;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .user-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: var(--accent-primary);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+        }
+
+        .user-details {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .user-name {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .user-role {
+            font-size: 11px;
+            color: var(--text-secondary);
+        }
+
+        .version-info {
+            text-align: center;
+            font-size: 10px;
+            color: var(--text-tertiary);
+            margin-bottom: 8px;
+        }
+
+        /* ============================================
+           MAIN CONTENT
+           ============================================ */
+
+        .main-content {
+            flex: 1;
+            margin-left: 260px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .content-header {
+            background: var(--bg-card);
+            border-bottom: 1px solid var(--border-primary);
+            padding: 16px 24px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 16px;
+        }
+
+        .header-title h1 {
+            font-size: 20px;
+            font-weight: 600;
+            margin: 0 0 4px 0;
+            color: var(--text-primary);
+        }
+
+        .header-title p {
+            font-size: 13px;
+            color: var(--text-secondary);
+            margin: 0;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .cash-card {
+            background: var(--bg-secondary);
+            border-radius: 12px;
+            padding: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+
+        .cash-label {
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin-bottom: 4px;
+        }
+
+        .cash-amount {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--accent-primary);
+        }
+
+        .cash-detail {
+            display: flex;
+            gap: 24px;
+            flex-wrap: wrap;
+        }
+
+        .cash-detail-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+
+        .profit-highlight {
+            background: var(--success);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .profit-label {
+            font-size: 10px;
+            opacity: 0.9;
+        }
+
+        .profit-value {
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+        .module-content {
+            flex: 1;
+            padding: 24px;
+            overflow-y: auto;
+        }
+
+        /* ============================================
+           MOBILE HEADER
+           ============================================ */
+
+        .mobile-header {
+            display: none;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 16px;
+            background: var(--bg-card);
+            border-bottom: 1px solid var(--border-primary);
+            position: sticky;
+            top: 0;
+            z-index: 99;
+        }
+
+        .mobile-brand {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .mobile-actions {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* ============================================
+           BURGER MENU
+           ============================================ */
+
+        .menu-toggle {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+            width: 40px;
+            height: 40px;
+            padding: 8px;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-primary);
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        .menu-toggle span {
+            display: block;
+            width: 20px;
+            height: 2px;
+            background-color: var(--text-primary);
+            border-radius: 2px;
+            transition: all 0.3s ease;
+        }
+
+        .menu-toggle.active span:nth-child(1) {
+            transform: rotate(45deg) translate(5px, 5px);
+        }
+
+        .menu-toggle.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .menu-toggle.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(5px, -5px);
+        }
+
+        /* ============================================
+           SIDEBAR OVERLAY
+           ============================================ */
+
+        .sidebar-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 999;
+        }
+
+        .sidebar-overlay.active {
+            display: block;
+        }
+
+        /* ============================================
+           THEME TOGGLE
+           ============================================ */
+
+        .theme-toggle-btn {
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-primary);
+            color: var(--text-primary);
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 18px;
+            transition: all 0.3s ease;
+        }
+
+        .theme-toggle-btn:hover {
+            background: var(--bg-hover);
+            transform: scale(1.05);
+        }
+
+        /* ============================================
+           CART BAR
+           ============================================ */
+
+        .cart-bar {
+            position: fixed;
+            bottom: 0;
+            left: 260px;
+            right: 0;
+            background: var(--bg-card);
+            border-top: 1px solid var(--border-primary);
+            padding: 16px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            z-index: 100;
+            box-shadow: var(--shadow-md);
+        }
+
+        .cart-info {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .cart-label {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        .cart-total {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--accent-primary);
+        }
+
+        .btn-checkout {
+            padding: 12px 24px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        /* ============================================
+           BUTTONS
+           ============================================ */
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            padding: 10px 16px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: none;
+            text-decoration: none;
+        }
+
+        .btn-primary {
+            background: var(--accent-primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--accent-hover);
+        }
+
+        .btn-success {
+            background: var(--success);
+            color: white;
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: var(--text-primary);
+            border: 1px solid var(--border-primary);
+        }
+
+        .btn-sm {
+            padding: 6px 12px;
+            font-size: 12px;
+        }
+
+        .btn-block {
+            width: 100%;
+        }
+
+        .btn-icon {
+            width: 40px;
+            height: 40px;
+            padding: 0;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-primary);
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .sync-btn {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 12px;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-primary);
+            border-radius: 20px;
+            font-size: 12px;
+            color: var(--text-secondary);
+            cursor: pointer;
+        }
+
+        /* ============================================
+           RESPONSIVE - MOBILE
+           ============================================ */
+
+        @media (max-width: 1024px) {
+            /* Mobile: Sidebar hidden by default, bisa slide */
+            .sidebar {
+                transform: translateX(-100%);
+                transition: transform 0.3s ease;
+            }
+
+            .sidebar.open {
+                transform: translateX(0);
+            }
+
+            .sidebar-close {
+                display: block;
+            }
+
+            /* Mobile: Main content full width */
+            .main-content {
+                margin-left: 0;
+            }
+
+            /* Mobile: Header tampil */
+            .mobile-header {
+                display: flex;
+            }
+
+            /* Mobile: Burger menu tampil */
+            .menu-toggle {
+                display: flex;
+            }
+
+            /* Mobile: Cart bar full width */
+            .cart-bar {
+                left: 0;
+                padding: 12px 16px;
+            }
+
+            /* Mobile: Content padding lebih kecil */
+            .module-content {
+                padding: 16px;
+            }
+
+            .content-header {
+                padding: 12px 16px;
+            }
+
+            .header-top {
+                margin-bottom: 12px;
+            }
+
+            .header-title h1 {
+                font-size: 18px;
+            }
+
+            /* Mobile: Cash card compact */
+            .cash-card {
+                padding: 12px;
+                gap: 12px;
+            }
+
+            .cash-amount {
+                font-size: 18px;
+            }
+
+            .cash-detail {
+                gap: 12px;
+            }
+
+            .cash-detail-item {
+                font-size: 11px;
+            }
+
+            .profit-highlight {
+                padding: 6px 12px;
+            }
+
+            .profit-value {
+                font-size: 12px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .mobile-header {
+                padding: 10px 12px;
+            }
+
+            .cash-card {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 8px;
+            }
+
+            .cash-detail {
+                width: 100%;
+                justify-content: space-between;
+            }
+
+            .cart-bar {
+                padding: 10px 12px;
+            }
+
+            .cart-total {
+                font-size: 16px;
+            }
+
+            .btn-checkout {
+                padding: 10px 16px;
+                font-size: 13px;
+            }
+        }
+
+        /* ============================================
+           HIDE FAB
+           ============================================ */
+
+        .fab-container {
+            display: none !important;
+        }
+
+        /* ============================================
+           LOGIN PAGE
+           ============================================ */
+
+        .login-page {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-secondary) 100%);
+            padding: 20px;
+        }
+
+        .login-container {
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .login-box {
+            background: var(--bg-card);
+            border-radius: 16px;
+            padding: 32px;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .login-logo {
+            text-align: center;
+            margin-bottom: 24px;
+        }
+
+        .logo-icon {
+            font-size: 48px;
+            margin-bottom: 8px;
+        }
+
+        .login-logo h1 {
+            font-size: 24px;
+            font-weight: 700;
+            margin: 0 0 4px 0;
+            color: var(--text-primary);
+        }
+
+        .login-logo p {
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin: 0;
+        }
+
+        .login-form {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .form-group label {
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--text-secondary);
+        }
+
+        .form-input {
+            padding: 12px 16px;
+            border: 2px solid var(--border-primary);
+            border-radius: 10px;
+            font-size: 15px;
+            background: var(--input-bg);
+            color: var(--text-primary);
+            transition: all 0.2s ease;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--accent-primary);
+        }
+
+        .login-error {
+            color: var(--error);
+            font-size: 13px;
+            text-align: center;
+            min-height: 20px;
+        }
+
+        .login-footer {
+            margin-top: 24px;
+            text-align: center;
+            font-size: 12px;
+            color: var(--text-tertiary);
+        }
+
+        .login-footer p {
+            margin: 0 0 4px 0;
+        }
+
+        /* ============================================
+           MODAL & TOAST
+           ============================================ */
+
+        .modal-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 2000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-backdrop {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--modal-overlay);
+        }
+
+        .modal {
+            position: relative;
+            background: var(--bg-card);
+            border-radius: 16px;
+            width: 90%;
+            max-width: 500px;
+            max-height: 90vh;
+            overflow: hidden;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .modal-header {
+            padding: 16px 20px;
+            border-bottom: 1px solid var(--border-primary);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .modal-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin: 0;
+            color: var(--text-primary);
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+            color: var(--text-secondary);
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+        }
+
+        .modal-close:hover {
+            background: var(--bg-hover);
+        }
+
+        .modal-body {
+            padding: 20px;
+            overflow-y: auto;
+            max-height: 60vh;
+        }
+
+        .modal-footer {
+            padding: 16px 20px;
+            border-top: 1px solid var(--border-primary);
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+        }
+
+        .toast-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 3000;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        /* ============================================
+           SEARCH
+           ============================================ */
+
+        .search-bar {
+            position: relative;
+        }
+
+        .search-input-wrapper {
+            position: relative;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 10px 40px;
+            border: 2px solid var(--border-primary);
+            border-radius: 10px;
+            font-size: 14px;
+            background: var(--input-bg);
+            color: var(--text-primary);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 16px;
+            color: var(--text-tertiary);
+        }
+
+        .search-clear {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            font-size: 16px;
+            cursor: pointer;
+            color: var(--text-tertiary);
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .search-results {
+            margin-top: 8px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        /* ============================================
+           LOADING
+           ============================================ */
+
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--bg-primary);
+            z-index: 5000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .loading-content {
+            text-align: center;
+        }
+
+        .loading-logo {
+            font-size: 64px;
+            margin-bottom: 16px;
+        }
+
+        .loading-spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid var(--border-primary);
+            border-top-color: var(--accent-primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 16px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .loading-text {
+            font-size: 16px;
+            color: var(--text-primary);
+            margin-bottom: 16px;
+        }
+
+        .loading-progress {
+            width: 200px;
+            height: 4px;
+            background: var(--border-primary);
+            border-radius: 2px;
+            margin: 0 auto 8px;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: var(--accent-primary);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        .loading-status {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        /* ============================================
+           BLUETOOTH FAB
+           ============================================ */
+
+        .bluetooth-fab {
+            position: fixed;
+            bottom: 80px;
+            right: 20px;
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: var(--accent-primary);
+            color: white;
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+            box-shadow: var(--shadow-md);
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .bluetooth-fab:hover {
+            transform: scale(1.1);
+        }
+
+        @media (max-width: 1024px) {
+            .bluetooth-fab {
+                bottom: 100px;
+            }
+        }
+    </style>
+<base target="_blank">
+</head>
+<body>
+    <!-- ============================================
+         LOGIN PAGE
+         ============================================ -->
+    <div id="loginPage" class="login-page">
+        <div class="login-container">
+            <div class="login-box">
+                <div class="login-logo">
+                    <img id="loginLogo" src="" alt="Logo" style="display:none; width:64px; height:64px; border-radius:12px; object-fit:cover; margin:0 auto 8px auto;">
+                    <div class="logo-icon">🏪</div>
+                    <h1 id="loginStoreName">Hifzi Cell</h1>
+                    <p>Sistem Kasir Pintar</p>
+                </div>
+
+                <form id="loginForm" class="login-form">
+                    <div class="form-group">
+                        <label for="loginUsername">👤 Username</label>
+                        <input type="text" id="loginUsername" class="form-input"
+                            placeholder="Masukkan username" autocomplete="username" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="loginPassword">🔒 Password</label>
+                        <input type="password" id="loginPassword" class="form-input"
+                            placeholder="Masukkan password" autocomplete="current-password" required>
+                    </div>
+
+                    <div id="loginError" class="login-error"></div>
+
+                    <button type="submit" id="loginBtn" class="btn btn-primary btn-block">
+                        🔓 Login
+                    </button>
+                </form>
+
+                <div class="login-footer">
+                    <div class="version-info" style="margin-top: 10px;">
+                        <span id="loginAppVersion">v2.0.0</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================
+         MAIN APP
+         ============================================ -->
+    <div id="appPage" class="app-page" style="display: none;">
+
+        <!-- Enhanced Loading Overlay -->
+        <div id="loadingOverlay" class="loading-overlay" style="display: none;">
+            <div class="loading-content">
+                <div class="loading-logo">🏪</div>
+                <div class="loading-spinner"></div>
+                <div class="loading-text">Memuat Hifzi Cell...</div>
+                <div class="loading-progress">
+                    <div class="progress-bar" id="loadingProgressBar"></div>
+                </div>
+                <div class="loading-status" id="loadingStatus">Menginisialisasi...</div>
+            </div>
+        </div>
+
+        <!-- Mobile Header -->
+        <header class="mobile-header">
+            <button id="menuToggle" class="menu-toggle" title="Menu" onclick="app.toggleSidebar()">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+
+            <div class="mobile-brand">
+                <img id="mobileLogo" src="" alt="Logo" style="display:none; width:28px; height:28px; border-radius:6px; object-fit:cover; margin-right:6px;">
+                <span>🏪</span>
+                <span id="mobileStoreName">Hifzi Cell</span>
+            </div>
+            <div class="mobile-actions">
+                <button id="syncStatus" class="sync-btn" title="Sync">
+                    <span>☁️</span>
+                    <span id="syncText">Ready</span>
+                </button>
+                <button id="searchBtn" class="btn-icon" title="Cari" onclick="app.openSearch()">🔍</button>
+                <button id="userMenuBtn" class="btn-icon" title="User">👤</button>
+            </div>
+        </header>
+
+        <!-- Search Modal (Mobile) -->
+        <div id="searchModal" class="modal-container" style="display: none;">
+            <div class="modal-backdrop" onclick="app.closeSearch()"></div>
+            <div class="modal modal-bottom-sheet">
+                <div class="modal-header">
+                    <h3 class="modal-title">🔍 Pencarian</h3>
+                    <button class="modal-close" onclick="app.closeSearch()">✕</button>
+                </div>
+                <div class="modal-body">
+                    <div class="search-bar">
+                        <div class="search-input-wrapper">
+                            <input type="text" id="globalSearchInput" class="search-input" 
+                                placeholder="Cari produk, transaksi, pelanggan..." autocomplete="off">
+                            <span class="search-icon">🔍</span>
+                            <button class="search-clear" onclick="app.clearSearch()">✕</button>
+                        </div>
+                    </div>
+                    <div id="searchResults" class="search-results open"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sidebar Navigation -->
+        <aside id="sidebar" class="sidebar">
+            <div class="sidebar-header">
+                <div class="brand">
+                    <img id="sidebarLogo" src="" alt="Logo" style="display:none; width:40px; height:40px; border-radius:8px; object-fit:cover; margin-right:8px;">
+                    <span class="brand-icon">🏪</span>
+                    <div class="brand-text">
+                        <h2 id="sidebarStoreName">HIFZI CELL</h2>
+                        <small id="sidebarStoreAddress">Alamat Toko</small>
+                    </div>
+                </div>
+                <button id="sidebarClose" class="sidebar-close" onclick="app.toggleSidebar()">✕</button>
+            </div>
+
+            <!-- Search Bar (Desktop) -->
+            <div class="sidebar-search hide-mobile" style="padding: 12px; border-bottom: 1px solid var(--border-primary);">
+                <div class="search-bar">
+                    <div class="search-input-wrapper">
+                        <input type="text" id="sidebarSearchInput" class="search-input" 
+                            placeholder="Cari menu..." autocomplete="off" oninput="app.filterMenu(this.value)">
+                        <span class="search-icon">🔍</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Kasir Status -->
+            <div class="kasir-status-sidebar" id="kasirStatusSidebar">
+                <div class="kasir-indicator closed" id="kasirIndicator">
+                    <span class="kasir-dot"></span>
+                    <span id="kasirStatusText">🔒 Kasir Tutup</span>
+                </div>
+                <button id="kasirToggleBtn" class="btn btn-success btn-sm btn-block" onclick="app.toggleKasir()">
+                    🔓 Buka Kasir
+                </button>
+            </div>
+
+            <!-- Navigation Menu -->
+            <nav class="sidebar-nav">
+                <!-- Menu Utama -->
+                <div class="nav-section">
+                    <div class="nav-dropdown-toggle active" data-dropdown="main" onclick="app.toggleDropdown(this)">
+                        <span class="nav-label">Menu Utama</span>
+                        <span class="dropdown-arrow">▼</span>
+                    </div>
+                    <div class="nav-dropdown-menu active" id="dropdown-main">
+                        <a href="#pos" class="nav-link" data-module="pos" onclick="app.handleNavClick(event, 'pos')">
+                            <span class="nav-icon">🛒</span>
+                            <span>Kasir</span>
+                            <span id="cartBadge" class="badge" style="display: none;">0</span>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Data Master -->
+                <div class="nav-section">
+                    <div class="nav-dropdown-toggle active" data-dropdown="master" onclick="app.toggleDropdown(this)">
+                        <span class="nav-label">Data Master</span>
+                        <span class="dropdown-arrow">▼</span>
+                    </div>
+                    <div class="nav-dropdown-menu active" id="dropdown-master">
+                        <a href="#products" class="nav-link" data-module="products" onclick="app.handleNavClick(event, 'products')">
+                            <span class="nav-icon">📦</span>
+                            <span>Produk</span>
+                        </a>
+                        <a href="#purchases" class="nav-link" data-module="purchases" onclick="app.handleNavClick(event, 'purchases')">
+                            <span class="nav-icon">🛍️</span>
+                            <span>Pembelian</span>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Transaksi -->
+                <div class="nav-section">
+                    <div class="nav-dropdown-toggle active" data-dropdown="transaksi" onclick="app.toggleDropdown(this)">
+                        <span class="nav-label">Transaksi</span>
+                        <span class="dropdown-arrow">▼</span>
+                    </div>
+                    <div class="nav-dropdown-menu active" id="dropdown-transaksi">
+                        <a href="#transactions" class="nav-link" data-module="transactions" onclick="app.handleNavClick(event, 'transactions')">
+                            <span class="nav-icon">📝</span>
+                            <span>Riwayat Transaksi</span>
+                        </a>
+                        <!-- ✅ TAMBAHAN: Capital/Modal Harian (hanya Owner & Admin) -->
+                        <a href="#capital" class="nav-link owner-admin-only" data-module="capital" onclick="app.handleNavClick(event, 'capital')">
+                            <span class="nav-icon">💰</span>
+                            <span>Modal Harian</span>
+                        </a>
+                        <a href="#cash" class="nav-link" data-module="cash" onclick="app.handleNavClick(event, 'cash')">
+                            <span class="nav-icon">🏦</span>
+                            <span>Kas & Shift</span>
+                        </a>
+                        <a href="#debts" class="nav-link" data-module="debts" onclick="app.handleNavClick(event, 'debts')">
+                            <span class="nav-icon">💳</span>
+                            <span>Hutang/Piutang</span>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Laporan -->
+                <div class="nav-section">
+                    <div class="nav-dropdown-toggle active" data-dropdown="laporan" onclick="app.toggleDropdown(this)">
+                        <span class="nav-label">Laporan</span>
+                        <span class="dropdown-arrow">▼</span>
+                    </div>
+                    <div class="nav-dropdown-menu active" id="dropdown-laporan">
+                        <a href="#reports" class="nav-link" data-module="reports" onclick="app.handleNavClick(event, 'reports')">
+                            <span class="nav-icon">📈</span>
+                            <span>Laporan</span>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Integrasi -->
+                <div class="nav-section">
+                    <div class="nav-dropdown-toggle active" data-dropdown="integrasi" onclick="app.toggleDropdown(this)">
+                        <span class="nav-label">Integrasi</span>
+                        <span class="dropdown-arrow">▼</span>
+                    </div>
+                    <div class="nav-dropdown-menu active" id="dropdown-integrasi">
+                        <a href="#telegram" class="nav-link" data-module="telegram" onclick="app.handleNavClick(event, 'telegram')">
+                            <span class="nav-icon">✈️</span>
+                            <span>Saldo Telegram</span>
+                        </a>
+                        <a href="#n8n" class="nav-link" data-module="n8n" onclick="app.handleNavClick(event, 'n8n')">
+                            <span class="nav-icon">🔌</span>
+                            <span>Data Pelanggan</span>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Sistem -->
+                <div class="nav-section">
+                    <div class="nav-dropdown-toggle active" data-dropdown="sistem" onclick="app.toggleDropdown(this)">
+                        <span class="nav-label">Sistem</span>
+                        <span class="dropdown-arrow">▼</span>
+                    </div>
+                    <div class="nav-dropdown-menu active" id="dropdown-sistem">
+                        <a href="#users" class="nav-link owner-admin-only" data-module="users" onclick="app.handleNavClick(event, 'users')">
+                            <span class="nav-icon">👥</span>
+                            <span>Pengguna</span>
+                        </a>
+                        <a href="#settings" class="nav-link" data-module="settings" onclick="app.handleNavClick(event, 'settings')">
+                            <span class="nav-icon">⚙️</span>
+                            <span>Pengaturan</span>
+                        </a>
+                        <a href="#backup" class="nav-link owner-admin-only" data-module="backup" onclick="app.handleNavClick(event, 'backup')">
+                            <span class="nav-icon">💾</span>
+                            <span>Backup & Sync</span>
+                        </a>
+                        <a href="#receipt" class="nav-link" data-module="receipt" onclick="app.handleNavClick(event, 'receipt')">
+                            <span class="nav-icon">🧾</span>
+                            <span>Printer & Struk</span>
+                        </a>
+                        <!-- ✅ Menu Reset Data (Owner Only) -->
+                        <a href="#reset" class="nav-link owner-only" data-module="reset" onclick="app.handleNavClick(event, 'reset')">
+                            <span class="nav-icon">🗑️</span>
+                            <span>Reset Data</span>
+                        </a>
+                    </div>
+                </div>
+            </nav>
+
+            <!-- Sidebar Footer -->
+            <div class="sidebar-footer">
+                <div class="user-info" id="userInfoSidebar">
+                    <div class="user-avatar" id="userAvatar">👤</div>
+                    <div class="user-details">
+                        <span id="userName" class="user-name">-</span>
+                        <span id="userRole" class="user-role">-</span>
+                    </div>
+                </div>
+                <div class="version-info">
+                    <span id="sidebarAppVersion">v2.0.0</span> | 
+                    <span id="lastSyncTime">Sync: -</span>
+                </div>
+                <button id="logoutBtn" class="btn btn-outline btn-sm btn-block" onclick="app.logout()">
+                    🚪 Logout
+                </button>
+            </div>
+        </aside>
+
+        <!-- Sidebar Overlay -->
+        <div id="sidebarOverlay" class="sidebar-overlay" onclick="app.toggleSidebar()"></div>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Content Header -->
+            <header class="content-header">
+                <div class="header-top">
+                    <div class="header-title">
+                        <h1 id="pageTitle">Dashboard</h1>
+                        <p id="currentDate">-</p>
+
+                        <div id="kasirStatusHeader" class="kasir-indicator closed">
+                            <span id="kasirStatusDot" class="kasir-dot"></span>
+                            <span id="kasirStatusHeaderText">🔒 Kasir Tutup</span>
+                        </div>
+                    </div>
+
+                    <div class="header-actions">
+                        <!-- TAMBAHAN: Sync Control Container -->
+                        <div id="syncControlContainer" style="display: flex; align-items: center;">
+                    </div>
+                        
+                        <button class="theme-toggle-btn" onclick="app.toggleDarkMode()" title="Toggle Theme">🌙</button>
+
+                        <button id="headerKasirToggle" class="kasir-toggle-btn" style="display: none;" onclick="app.toggleKasir()">
+                            🔓 Buka Kasir
+                        </button>
+
+                        <div class="user-info-header" id="userInfoHeader" style="display: none;">
+                            <div class="user-avatar">👤</div>
+                            <div class="user-details">
+                                <div class="user-name" id="headerUserName">User</div>
+                                <div class="user-role" id="headerUserRole">Kasir</div>
+                            </div>
+                            <button class="btn btn-sm btn-outline" onclick="app.logout()">Logout</button>
+                        </div>
+
+                        <button class="btn-icon" onclick="app.openSettings()" title="Pengaturan">⚙️</button>
+                    </div>
+                </div>
+
+                <!-- Cash Card -->
+                <div class="cash-card" id="cashCard">
+                    <div>
+                        <div class="cash-label">Kas di Tangan</div>
+                        <div class="cash-amount" id="currentCash">Rp 0</div>
+                    </div>
+
+                    <div class="cash-detail">
+                        <div class="cash-detail-item">
+                            <span>💰</span>
+                            <span>Modal: <b id="modalAwal">Rp 0</b></span>
+                        </div>
+                        <div class="cash-detail-item">
+                            <span>📊</span>
+                            <span>Trans: <b id="headerTransactionCount">0</b></span>
+                        </div>
+                        <div class="cash-detail-item">
+                            <span>📝</span>
+                            <span>Shift: <b id="shiftStatus">Tutup</b></span>
+                        </div>
+
+                        <div class="profit-highlight" id="profitContainer">
+                            <div class="profit-label">Laba</div>
+                            <div class="profit-value" id="headerProfit">Rp 0</div>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Module Content -->
+            <div id="moduleContent" class="module-content"></div>
+        </main>
+
+        <!-- Cart Bar (POS) -->
+        <div class="cart-bar" id="cartBar" style="display: none;">
+            <div class="cart-info">
+                <div class="cart-label">Total Belanja (<span id="cartItemCount">0 item</span>)</div>
+                <div class="cart-total" id="cartTotal">Rp 0</div>
+            </div>
+            <button class="btn btn-primary btn-checkout" id="checkoutBtn" onclick="app.checkout()">
+                Bayar →
+            </button>
+        </div>
+
+        <!-- Toast Notifications -->
+        <div id="toastContainer" class="toast-container"></div>
+
+        <!-- Modal Container -->
+        <div id="modalContainer" class="modal-container" style="display: none;"></div>
+
+        <!-- Confirm Modal -->
+        <div id="confirmModal" class="modal-container" style="display: none;">
+            <div class="modal-backdrop" onclick="app.closeConfirm()"></div>
+            <div class="modal modal-sm">
+                <div class="modal-header">
+                    <h3 class="modal-title" id="confirmTitle">Konfirmasi</h3>
+                </div>
+                <div class="modal-body">
+                    <p id="confirmMessage">Apakah Anda yakin?</p>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" id="confirmCancel" onclick="app.closeConfirm()">Batal</button>
+                    <button class="btn btn-primary" id="confirmOk" onclick="app.confirmOk()">Ya</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bluetooth FAB -->
+        <button id="bluetoothFab" class="bluetooth-fab" title="Printer Bluetooth" onclick="app.openBluetooth()">🖨️</button>
+
+        <!-- Hidden Print Container -->
+        <div id="printContainer" style="display: none;"></div>
+    </div>
+
+    <!-- Main App Script -->
+    <script type="module" src="js/app.js"></script>
+
+    <!-- UI Enhancements & Role-Based Menu Visibility -->
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Update theme icon
+        const savedTheme = localStorage.getItem('hifzi_theme') || 'light';
+        const themeBtn = document.querySelector('.theme-toggle-btn');
+        if (themeBtn) {
+            themeBtn.textContent = savedTheme === 'dark' ? '☀' : '🌙';
+        }
+
+        // Burger menu animation handler
+        const menuToggle = document.getElementById('menuToggle');
+        const sidebar = document.getElementById('sidebar');
+        const sidebarOverlay = document.getElementById('sidebarOverlay');
+
+        if (menuToggle && sidebar && sidebarOverlay) {
+            menuToggle.addEventListener('click', function() {
+                this.classList.toggle('active');
+                sidebar.classList.toggle('open');
+                sidebarOverlay.classList.toggle('active');
+            });
+        }
+
+        // Role-based menu visibility handler
+        function updateMenuByRole() {
+            const currentUser = JSON.parse(localStorage.getItem('hifzi_current_user') || '{}');
+            const role = currentUser.role?.toLowerCase();
+
+            if (!role) return;
+
+            // Owner: show all
+            if (role === 'owner') {
+                document.querySelectorAll('.owner-only, .owner-admin-only').forEach(el => {
+                    el.style.display = 'flex';
+                });
+                return;
+            }
+
+            // Admin: show owner-admin items, hide owner-only
+            if (role === 'admin') {
+                document.querySelectorAll('.owner-admin-only').forEach(el => {
+                    el.style.display = 'flex';
+                });
+                document.querySelectorAll('.owner-only').forEach(el => {
+                    el.style.display = 'none';
+                });
+                return;
+            }
+
+            // Kasir: hide owner-only and owner-admin
+            if (role === 'kasir') {
+                document.querySelectorAll('.owner-only, .owner-admin-only').forEach(el => {
+                    el.style.display = 'none';
+                });
+            }
+        }
+
+        // Run on load
+        updateMenuByRole();
+
+        // Also run when localStorage changes (for login/logout)
+        window.addEventListener('storage', function(e) {
+            if (e.key === 'hifzi_current_user') {
+                updateMenuByRole();
+            }
+        });
+
+        console.log('[UI] Loaded successfully with role-based menu');
+    });
+    </script>
+</body>
+</html>
