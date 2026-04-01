@@ -1,8 +1,12 @@
 const UI = {
 
   init() {
+    Product.init(); // 🔥 load produk dulu
+    Cart.init();    // 🔥 load cart
+
     this.bindEvents();
     this.renderProdukKasir();
+    this.renderCart();
   },
 
   bindEvents() {
