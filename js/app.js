@@ -1,4 +1,4 @@
 document.addEventListener("DOMContentLoaded", () => {
-  Auth.init();
-  UI.init();
+  Auth.init();   // 🔥 login dulu
+  UI.init();     // baru UI
 });
