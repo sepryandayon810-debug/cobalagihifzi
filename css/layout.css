@@ -1,0 +1,23 @@
+.container {
+  display: flex;
+  height: 100vh;
+}
+
+.sidebar {
+  width: 240px;
+  background: var(--primary);
+  color: white;
+  padding: 20px;
+}
+
+.main {
+  flex: 1;
+  padding: 20px;
+}
+
+.header {
+  background: white;
+  padding: 15px;
+  margin-bottom: 20px;
+  border-radius: 8px;
+}
