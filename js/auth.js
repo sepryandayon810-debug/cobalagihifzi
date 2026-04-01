@@ -6,15 +6,14 @@ const Auth = {
   },
 
   init() {
-    this.check();
     this.bindEvents();
+    this.check(); // 🔥 pastikan dipanggil setelah DOM siap
   },
 
   bindEvents() {
-    // tombol login
     window.login = () => this.login();
+    window.logout = () => this.logout();
 
-    // enter di password
     const pass = document.getElementById("password");
     if (pass) {
       pass.addEventListener("keypress", (e) => {
@@ -23,9 +22,6 @@ const Auth = {
         }
       });
     }
-
-    // logout global
-    window.logout = () => this.logout();
   },
 
   login() {
@@ -38,8 +34,7 @@ const Auth = {
     ) {
       localStorage.setItem("isLogin", "true");
 
-      document.getElementById("loginPage").style.display = "none";
-      document.getElementById("app").style.display = "block";
+      this.showApp();
     } else {
       alert("Username atau password salah!");
     }
@@ -54,11 +49,25 @@ const Auth = {
     const isLogin = localStorage.getItem("isLogin");
 
     if (isLogin === "true") {
-      document.getElementById("loginPage").style.display = "none";
-      document.getElementById("app").style.display = "block";
+      this.showApp();
     } else {
-      document.getElementById("loginPage").style.display = "flex";
-      document.getElementById("app").style.display = "none";
+      this.showLogin();
     }
+  },
+
+  showApp() {
+    const loginPage = document.getElementById("loginPage");
+    const app = document.getElementById("app");
+
+    if (loginPage) loginPage.style.display = "none";
+    if (app) app.style.display = "block";
+  },
+
+  showLogin() {
+    const loginPage = document.getElementById("loginPage");
+    const app = document.getElementById("app");
+
+    if (loginPage) loginPage.style.display = "flex";
+    if (app) app.style.display = "none";
   }
 };
