@@ -89,69 +89,11 @@
   </div>
 </div>
 
-<!-- SCRIPT -->
+<script src="js/auth.js"></script>
+<script src="js/product.js"></script>
+<script src="js/cart.js"></script>
+<script src="js/ui.js"></script>
 <script src="js/app.js"></script>
-
-<script>
-let produk = [];
-let cart = [];
-
-// LOGIN
-function login() {
-  document.getElementById("loginPage").style.display = "none";
-  document.getElementById("app").style.display = "block";
-}
-
-// LOGOUT
-function logout() {
-  location.reload();
-}
-
-// NAVIGASI
-function showPage(page) {
-  document.getElementById("kasirPage").style.display = "none";
-  document.getElementById("produkPage").style.display = "none";
-
-  if (page === "kasir") {
-    document.getElementById("kasirPage").style.display = "block";
-    document.getElementById("pageTitle").innerText = "Kasir";
-  }
-
-  if (page === "produk") {
-    document.getElementById("produkPage").style.display = "block";
-    document.getElementById("pageTitle").innerText = "Produk";
-    renderProduk();
-  }
-}
-
-// TAMBAH PRODUK
-function tambahProduk() {
-  const nama = document.getElementById("namaProduk").value;
-  const harga = document.getElementById("hargaProduk").value;
-
-  produk.push({ nama, harga: Number(harga) });
-
-  document.getElementById("namaProduk").value = "";
-  document.getElementById("hargaProduk").value = "";
-
-  renderProduk();
-  renderListProduk();
-}
-
-// RENDER PRODUK LIST
-function renderProduk() {
-  const el = document.getElementById("daftarProduk");
-  el.innerHTML = "";
-
-  produk.forEach((p, i) => {
-    el.innerHTML += `
-      <div class="card">
-        ${p.nama} - Rp ${p.harga}
-        <button class="button-danger" onclick="hapusProduk(${i})">Hapus</button>
-      </div>
-    `;
-  });
-}
 
 // HAPUS PRODUK
 function hapusProduk(i) {
