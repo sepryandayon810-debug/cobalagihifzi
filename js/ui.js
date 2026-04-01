@@ -6,14 +6,17 @@ const UI = {
   },
 
   bindEvents() {
-    window.login = () => Auth.login();
-    window.logout = () => Auth.logout();
-
     window.showPage = (p) => this.showPage(p);
 
     window.tambahProduk = () => {
       const nama = document.getElementById("namaProduk").value;
       const harga = document.getElementById("hargaProduk").value;
+
+      if (!nama || !harga) {
+        alert("Isi semua data!");
+        return;
+      }
+
       Product.tambah(nama, harga);
 
       document.getElementById("namaProduk").value = "";
@@ -25,6 +28,11 @@ const UI = {
     window.tambahCart = (i) => Cart.tambah(Product.data[i]);
 
     window.checkout = () => {
+      if (Cart.data.length === 0) {
+        alert("Keranjang kosong!");
+        return;
+      }
+
       alert("Transaksi berhasil!");
       Cart.clear();
     };
